@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "🚀 Backend (Node.js)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/server.js",
+            "restart": true,
+            "console": "integratedTerminal",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "cwd": "${workspaceFolder}/backend"
+        },
+        {
+            "name": "🌐 Frontend (Browser)",
+            "type": "msedge",
+            "request": "launch",
+            "url": "http://localhost:5000",
+            "webRoot": "${workspaceFolder}/frontend",
+            "sourceMaps": false,
+            "runtimeExecutable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "🎯 Full Stack (Backend + Frontend)",
+            "configurations": ["🚀 Backend (Node.js)", "🌐 Frontend (Browser)"],
+            "stopOnEntry": false
+        }
+    ]
+}

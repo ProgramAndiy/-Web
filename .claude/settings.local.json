@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node server.js)",
+      "Bash(curl -s http://localhost:5000/health)",
+      "Bash(curl -s -I http://localhost:5000/)",
+      "Bash(taskkill /F /IM node.exe)"
+    ]
+  }
+}

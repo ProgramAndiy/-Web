@@ -1,0 +1,10 @@
+{
+  "name": "suchasna-bakery",
+  "version": "1.0.0",
+  "description": "Сучасна Пекарня — Full Stack App",
+  "scripts": {
+    "start":    "cd backend && node server.js",
+    "dev":      "cd backend && npx nodemon server.js",
+    "init-db":  "cd backend && node init-sqlite.js"
+  }
+}
