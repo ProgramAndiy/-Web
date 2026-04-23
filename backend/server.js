@@ -25,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 // ─── STATIC FILES ─────────────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/img',     express.static(path.join(__dirname, '../img')));
 
 // ─── REQUEST LOGGING ───────────────────────────────────────────────────────
 app.use((req, res, next) => {

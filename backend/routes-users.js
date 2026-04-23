@@ -11,32 +11,33 @@ const JWT_EXPIRY = '7d';
 
 // 📝 РЕЄСТРАЦІЯ
 router.post('/register', async (req, res) => {
-  const { email, password, name, phone } = req.body;
+  const { email, password, name, phone, adminCode } = req.body;
 
   if (!email || !password || !name) {
     return res.status(400).json({ error: 'Все поля обов\'язкові' });
   }
 
+  if (adminCode && adminCode !== 'admin_26') {
+    return res.status(403).json({ error: 'Невірний код адміністратора' });
+  }
+
+  const role = adminCode === 'admin_26' ? 'admin' : 'user';
+
   try {
-    // Перевірка, чи користувач вже існує
     const existing = await get('SELECT id FROM users WHERE email = ?', [email]);
-    
     if (existing) {
       return res.status(400).json({ error: 'Користувач з таким email вже існує' });
     }
 
-    // Хешування пароля
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Вставка користувача
     const result = await run(
       'INSERT INTO users (email, password_hash, name, phone, role) VALUES (?, ?, ?, ?, ?)',
-      [email, hashedPassword, name, phone || '', 'user']
+      [email, hashedPassword, name, phone || '', role]
     );
 
-    // Генерація токена
     const token = jwt.sign(
-      { id: result.id, email, role: 'user' },
+      { id: result.id, email, role },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRY }
     );
@@ -44,7 +45,7 @@ router.post('/register', async (req, res) => {
     res.json({
       message: 'Реєстрація успішна',
       token,
-      user: { id: result.id, email, name, role: 'user' }
+      user: { id: result.id, email, name, role }
     });
   } catch (error) {
     console.error('Помилка реєстрації:', error);
@@ -79,7 +80,7 @@ router.post('/login', async (req, res) => {
 
     // Перевірка адміністраторського кода
     if (adminCode) {
-      if (adminCode !== 'pekarna_admin_2024') {
+      if (adminCode !== 'admin_26') {
         return res.status(403).json({ error: 'Невірний код адміністратора' });
       }
       userRole = 'admin';

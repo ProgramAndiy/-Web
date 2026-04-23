@@ -27,10 +27,10 @@ const PARTNERS = [
 ];
 
 const TEAM = [
-  { name: "Олена Коваль",   role: "Шеф-кондитер",        emoji: "👩‍🍳" },
-  { name: "Богдан Мельник", role: "Майстер-пекар",        emoji: "👨‍🍳" },
-  { name: "Ірина Лисак",   role: "Технолог виробництва", emoji: "👩‍💼" },
-  { name: "Тарас Гнатів",  role: "Керівник логістики",   emoji: "🚛" },
+  { name: "Олена Коваль",   role: "Шеф-кондитер",        img: "/uploads/worker-1.png" },
+  { name: "Богдан Мельник", role: "Майстер-пекар",        img: "/uploads/worker-2.png" },
+  { name: "Ірина Лисак",   role: "Технолог виробництва", img: "/uploads/worker-3.png" },
+  { name: "Тарас Гнатів",  role: "Керівник логістики",   img: "/uploads/worker-4.png" },
 ];
 
 const VALUES = [
@@ -103,7 +103,8 @@ function App() {
             price: parseInt(p.price),
             category: p.category_id === 1 ? "sweet" : p.category_id === 2 ? "meat" : "bread",
             emoji: p.emoji || "📦",
-            desc: p.description || ""
+            desc: p.description || "",
+            image_url: p.image_url || null
           }));
           setDbProducts(transformed);
         }
@@ -333,7 +334,7 @@ function App() {
       </nav>
 
       {/* PAGES */}
-      {page==="home"     && <HomePage navigate={navigate} addToCart={addToCart} />}
+      {page==="home"     && <HomePage navigate={navigate} addToCart={addToCart} dbProducts={dbProducts} />}
       {page==="products" && <ProductsPage filtered={filtered} searchQ={searchQ} setSearchQ={setSearchQ} activeFilter={activeFilter} setActiveFilter={setActiveFilter} addToCart={addToCart} />}
       {page==="about"    && <AboutPage />}
       {page==="admin"    && user?.role==="admin" && <AdminPage adminTab={adminTab} setAdminTab={setAdminTab} dbProducts={dbProducts} setDbProducts={setDbProducts} token={user?.token} />}
@@ -627,7 +628,7 @@ function App() {
 }
 
 // ─── HOME PAGE ────────────────────────────────────────────────────────────────
-function HomePage({ navigate, addToCart }) {
+function HomePage({ navigate, addToCart, dbProducts }) {
   return (
     <>
       <section className="hero">
@@ -662,14 +663,16 @@ function HomePage({ navigate, addToCart }) {
           <div className="divider"></div>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:"24px"}}>
-          {PRODUCTS.slice(0,4).map(p => {
+          {(dbProducts || PRODUCTS).slice(0,4).map(p => {
             const [bc,bl] = BADGE_MAP[p.category]||["badge-other","Інше"];
             return (
               <div key={p.id} className="product-card reveal">
-                <div className="product-img">
-                  <div className="product-img-bg"></div>
-                  <span className="product-emoji">{p.emoji}</span>
-                  <span className={`product-badge ${bc}`}>{bl}</span>
+                <div className="product-img" style={{position:"relative",overflow:"hidden"}}>
+                  {p.image_url
+                    ? <img src={`http://localhost:5000${p.image_url}`} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",inset:0,borderRadius:"16px 16px 0 0"}} />
+                    : <><div className="product-img-bg"></div><span className="product-emoji">{p.emoji}</span></>
+                  }
+                  <span className={`product-badge ${bc}`} style={{position:"relative",zIndex:1}}>{bl}</span>
                 </div>
                 <div className="product-body">
                   <div className="product-name">{p.name}</div>
@@ -863,7 +866,9 @@ function AboutPage() {
           <div className="team-grid">
             {TEAM.map(m => (
               <div key={m.name} className="team-card reveal">
-                <div className="team-avatar">{m.emoji}</div>
+                <div className="team-avatar" style={{padding:0,overflow:"hidden",background:"var(--beige-light)"}}>
+                  <img src={`http://localhost:5000${m.img}`} alt={m.name} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}} />
+                </div>
                 <div className="team-name">{m.name}</div>
                 <div className="team-role">{m.role}</div>
               </div>
