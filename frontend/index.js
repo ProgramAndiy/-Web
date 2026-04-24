@@ -723,27 +723,14 @@ function HomePage({ navigate, addToCart, dbProducts }) {
         </div>
         <div style={{maxWidth:"1200px",margin:"0 auto",padding:"0 40px"}}>
           <div className="map-container reveal">
-            <div className="map-placeholder">
-              <div className="map-grid"></div>
-              <div className="map-roads">
-                <div className="map-road" style={{width:"100%",height:"3px",top:"40%",left:0}}></div>
-                <div className="map-road" style={{width:"100%",height:"3px",top:"65%",left:0}}></div>
-                <div className="map-road" style={{width:"3px",height:"100%",left:"30%",top:0}}></div>
-                <div className="map-road" style={{width:"3px",height:"100%",left:"60%",top:0}}></div>
-              </div>
-              <div className="map-pin-wrap">
-                <div className="map-pin">📍</div>
-                <div style={{background:"white",borderRadius:"12px",padding:"10px 20px",boxShadow:"0 4px 20px rgba(0,0,0,0.15)",fontSize:"0.9rem",fontWeight:600,color:"var(--brown-dark)"}}>Сучасна Пекарня</div>
-                <div className="map-coords">49.8397° N, 24.0297° E</div>
-              </div>
-              <div className="map-info-box">
-                <h4>📍 Сучасна Пекарня</h4>
-                <p>вул. Городоцька 56, Львів</p>
-                <p style={{marginTop:"6px"}}>⏰ Пн–Сб: 05:00–20:00 | Нд: 06:00–18:00</p>
-              </div>
-            </div>
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=24.0097%2C49.8197%2C24.0497%2C49.8597&layer=mapnik&marker=49.8397%2C24.0297"
+              style={{width:"100%",height:"420px",border:"none",borderRadius:"20px",display:"block"}}
+              allowFullScreen
+              loading="lazy"
+              title="Сучасна Пекарня на карті"
+            ></iframe>
           </div>
-          <div className="map-embed-note">💡 Для інтерактивної карти Google Maps вставте iframe з координатами 49.8397, 24.0297</div>
         </div>
       </section>
     </>
